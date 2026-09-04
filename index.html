@@ -553,6 +553,14 @@ document.querySelectorAll(".filter-chip").forEach(btn => {
 searchInput.addEventListener("input", () => renderGrid(activeFilter, searchInput.value));
 
 renderGrid("ALL", "");
+
+// Deep link support: ?name=Full+Name opens that person's card automatically on load.
+const urlParams = new URLSearchParams(window.location.search);
+const deepLinkName = urlParams.get("name");
+if (deepLinkName) {
+  const match = PEOPLE.find(p => p.name.toLowerCase() === deepLinkName.toLowerCase());
+  if (match) openModal(match);
+}
 </script>
 
 </body>
