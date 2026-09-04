@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Made Possible By — Pay It Forward Summit 2026 (PROTOTYPE)</title>
+<style>
+  :root{
+    --navy:#000744; --blue:#3162F5; --lavender:#E7E9FA; --cream:#F7F5F0;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;background:var(--cream);}
+
+  /* ---------- nav ---------- */
+  .nav{
+    background:var(--navy);display:flex;align-items:center;justify-content:space-between;
+    padding:22px 40px;
+  }
+  .nav-logo{display:flex;align-items:center;gap:12px;color:#fff;font-weight:800;font-size:13px;letter-spacing:1px;line-height:1.3;}
+  .nav-logo img{height:34px;}
+  .nav-links{display:flex;gap:34px;}
+  .nav-links a{color:rgba(255,255,255,.75);text-decoration:none;font-weight:700;font-size:13px;letter-spacing:1.5px;}
+  .nav-links a.active{color:#fff;border-bottom:2px solid var(--blue);padding-bottom:6px;}
+
+  /* ---------- hero ---------- */
+  .hero{
+    background:linear-gradient(115deg, var(--navy) 30%, #4a3f8f 75%, #7a5fa8 100%);
+    color:#fff;position:relative;overflow:hidden;
+    padding:64px 40px 0 40px;display:flex;align-items:flex-end;gap:40px;min-height:440px;
+  }
+  .hero-copy{flex:1;max-width:560px;padding-bottom:56px;}
+  .hero h1{
+    font-family:Georgia,"EB Garamond",serif;
+    font-size:44px;font-weight:400;letter-spacing:0;line-height:1.15;margin:0 0 20px 0;color:#fff;
+  }
+  .hero h1 .accent{color:#a9b3ff;font-style:italic;}
+  .hero-body{font-size:16px;line-height:1.6;color:rgba(255,255,255,.85);margin:0 0 22px 0;max-width:480px;}
+  .hero-tagline{font-weight:800;font-size:13px;letter-spacing:2.5px;color:#c7cdff;margin-bottom:8px;}
+  .hero-tagline-rule{width:36px;height:2px;background:var(--blue);}
+  .hero-photo{
+    flex:0 0 320px;height:380px;border-radius:6px 6px 0 0;overflow:hidden;position:relative;
+    box-shadow:0 20px 60px rgba(0,0,0,.4);
+  }
+  .hero-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .hero-photo-caption{
+    position:absolute;top:20px;right:20px;text-align:right;color:#fff;
+    font-weight:800;font-size:12px;letter-spacing:1.4px;line-height:1.6;
+  }
+  .hero-photo-caption .rule{width:20px;height:2px;background:var(--blue);margin:6px 0 6px auto;}
+
+  /* ---------- search ---------- */
+  .search-bar{
+    max-width:1200px;margin:0 auto;padding:26px 40px;
+    display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  }
+  .search-bar .eyebrow{font-weight:800;font-size:12px;letter-spacing:1.6px;color:rgba(0,7,68,.5);}
+  .search-input{
+    flex:1;max-width:420px;padding:12px 18px;border-radius:999px;border:1px solid rgba(0,7,68,.15);
+    font-size:14px;color:var(--navy);background:#fff;
+  }
+  .search-input:focus{outline:2px solid var(--blue);}
+
+  /* ---------- stats ---------- */
+  .stats-wrap{
+    max-width:820px;margin:-56px auto 0 auto;background:var(--cream);
+    border-radius:8px;box-shadow:0 20px 50px rgba(0,7,68,.25);
+    display:flex;padding:36px 20px;position:relative;z-index:2;
+  }
+  .stat{flex:1;text-align:center;}
+  .stat .num{font-family:Georgia,serif;font-weight:700;font-size:52px;color:var(--navy);margin:0;}
+  .stat .lbl{font-weight:700;font-size:13px;letter-spacing:1.6px;color:var(--blue);text-transform:uppercase;margin-top:6px;}
+  .stat-rule{flex:0 0 1px;background:rgba(0,7,68,.15);}
+
+  /* ---------- filters ---------- */
+  .filters{
+    display:flex;justify-content:center;gap:14px;margin:56px 0 40px 0;flex-wrap:wrap;
+  }
+  .filter-chip{
+    padding:12px 26px;border-radius:999px;border:2px solid var(--navy);
+    background:transparent;color:var(--navy);font-weight:800;font-size:14px;
+    letter-spacing:1.5px;cursor:pointer;transition:.15s;
+  }
+  .filter-chip.active, .filter-chip:hover{background:var(--navy);color:#fff;}
+
+  /* ---------- grid ---------- */
+  .grid{
+    max-width:1200px;margin:0 auto;padding:0 40px 80px 40px;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));grid-auto-rows:200px;gap:14px;
+  }
+  .tile{
+    border-radius:8px;padding:20px;cursor:pointer;overflow:hidden;position:relative;
+    display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;
+    transition:.15s;
+  }
+  .tile:hover{transform:translateY(-3px);}
+
+  /* person tile — real name, real card behind it */
+  .tile.tile-person{background:#fff;box-shadow:0 4px 14px rgba(0,7,68,.08);border:1px solid rgba(0,7,68,.06);justify-content:flex-start;}
+  .tile.tile-person:hover{box-shadow:0 14px 30px rgba(0,7,68,.16);}
+  .tile.tile-person img.tile-icon{height:30px;width:auto;margin-bottom:12px;}
+  .tile .tile-name{font-weight:800;font-size:15px;color:var(--navy);margin:0 0 4px 0;line-height:1.25;}
+  .tile .tile-badge{
+    display:inline-block;font-weight:800;font-size:10px;letter-spacing:1.2px;
+    color:var(--blue);text-transform:uppercase;margin-bottom:8px;
+  }
+  .tile .tile-line{font-size:12px;color:#4a4a58;line-height:1.35;margin:0;}
+  .tile .placeholder-tag{
+    margin-top:10px;font-size:9px;font-weight:800;letter-spacing:1px;
+    color:rgba(0,7,68,.32);text-transform:uppercase;
+  }
+
+  /* photo tile — real summit photo, no name, decorative texture */
+  .tile.tile-photo{background-size:cover;background-position:center;cursor:default;}
+  .tile.tile-photo:hover{transform:none;}
+
+  /* concept tile — colored block with icon + short phrase, no name */
+  .tile.tile-concept{cursor:default;color:#fff;}
+  .tile.tile-concept:hover{transform:none;}
+  .tile.tile-concept .concept-icon{font-size:22px;margin-bottom:10px;opacity:.9;}
+  .tile.tile-concept .concept-text{font-weight:800;font-size:15px;line-height:1.3;}
+  .tile.tile-concept.bg-navy{background:var(--navy);}
+  .tile.tile-concept.bg-blue{background:linear-gradient(135deg,var(--blue),#5b7cfa);}
+  .tile.tile-concept.bg-lavender{background:var(--lavender);color:var(--navy);}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--navy);color:#fff;text-align:center;padding:30px;font-weight:700;letter-spacing:3px;font-size:13px;}
+
+  /* ---------- modal ---------- */
+  .modal-overlay{
+    display:none;position:fixed;inset:0;background:rgba(0,7,68,.75);
+    z-index:100;align-items:center;justify-content:center;padding:30px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-box{
+    background:#fff;border-radius:10px;max-width:520px;width:100%;
+    max-height:88vh;overflow:auto;position:relative;padding:0;
+  }
+  .modal-box img{width:100%;display:block;border-radius:10px;}
+  .modal-close{
+    position:absolute;top:14px;right:14px;background:var(--navy);color:#fff;
+    border:none;border-radius:50%;width:34px;height:34px;font-size:18px;cursor:pointer;
+    z-index:2;
+  }
+  .modal-placeholder{padding:50px 34px;text-align:center;}
+  .modal-placeholder .badge{font-weight:800;color:var(--blue);letter-spacing:1.5px;font-size:13px;margin-bottom:10px;text-transform:uppercase;}
+  .modal-placeholder h3{color:var(--navy);font-size:26px;margin:0 0 14px 0;}
+  .modal-placeholder p{color:#4a4a58;font-size:15px;line-height:1.6;}
+  .modal-placeholder .note{
+    margin-top:20px;display:inline-block;background:var(--lavender);color:var(--navy);
+    padding:10px 18px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:.6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-logo">
+    <img src="assets/logo-full-white.png" alt="Scholars Equity Network">
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-copy">
+    <div class="hero-tagline">ENABLING POTENTIAL AND UPLIFTING COMMUNITY.</div>
+    <div class="hero-tagline-rule"></div>
+    <h1 style="margin-top:18px;">No one builds something <span class="accent">like this alone.</span></h1>
+    <p class="hero-body">The 2026 Pay It Forward Summit was made possible by people who gave what they had — time, talent, and treasure.</p>
+  </div>
+  <div class="hero-photo">
+    <img src="assets/hero-photo.jpg" alt="Pay It Forward Summit">
+    <div class="hero-photo-caption">
+      A CONNECTED COMMUNITY<div class="rule"></div>THAT SHOWS UP AND STEPS UP FOR EACH OTHER.
+    </div>
+  </div>
+</div>
+
+<div class="stats-wrap">
+  <div class="stat"><p class="num">21</p><div class="lbl">Gave Time</div></div>
+  <div class="stat-rule"></div>
+  <div class="stat"><p class="num">46</p><div class="lbl">Shared Talent</div></div>
+  <div class="stat-rule"></div>
+  <div class="stat"><p class="num">15</p><div class="lbl">Invested Treasure</div></div>
+</div>
+
+<div class="search-bar">
+  <div class="eyebrow">EXPLORE THE PEOPLE WHO MADE IT POSSIBLE</div>
+  <input class="search-input" type="text" id="searchInput" placeholder="Search by name or contribution">
+</div>
+
+<div class="filters">
+  <button class="filter-chip active" data-filter="ALL">ALL 82</button>
+  <button class="filter-chip" data-filter="TIME">TIME</button>
+  <button class="filter-chip" data-filter="TALENT">TALENT</button>
+  <button class="filter-chip" data-filter="TREASURE">TREASURE</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer>SCHOLARSEQUITY.ORG</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box" id="modalBox"></div>
+</div>
+
+<script>
+const ICONS = {
+  TIME: "assets/icons/icon-time.png",
+  TALENT: "assets/icons/icon-talent.png",
+  TREASURE: "assets/icons/icon-treasure.png",
+};
+
+// all 78 real card PNGs — every tile now opens its actual generated card
+const REAL_CARDS = {
+  "Whitney Blanco": "assets/cards/Whitney-Blanco.png",
+  "Feyone La": "assets/cards/Feyone-La.png",
+  "Augustina Mensa-Kwao": "assets/cards/Augustina-Mensa-Kwao.png",
+  "Roslyn Joinvil": "assets/cards/Roslyn-Joinvil.png",
+  "Oghene Oyiborhoro": "assets/cards/Oghene-Oyiborhoro.png",
+  "Alexis Phillips": "assets/cards/Alexis-Phillips.png",
+  "Ethan Skinner": "assets/cards/Ethan-Skinner.png",
+  "Elisa Solis": "assets/cards/Elisa-Solis.png",
+  "Nnenna Ibeanusi": "assets/cards/Nnenna-Ibeanusi.png",
+  "Adan Garcia-Mechinas": "assets/cards/Adan-Garcia-Mechinas.png",
+  "Joshua Sanchez": "assets/cards/Joshua-Sanchez.png",
+  "Onyinye Edeh": "assets/cards/Onyinye-Edeh.png",
+  "Zephanii Smith": "assets/cards/Zephanii-Smith.png",
+  "Loreal Latimer": "assets/cards/Loreal-Latimer.png",
+  "Judith Rendon": "assets/cards/Judith-Rendon.png",
+  "Noah Morton": "assets/cards/Noah-Morton.png",
+  "Stephanie Gargiulo": "assets/cards/Stephanie-Gargiulo.png",
+  "Chau Dang": "assets/cards/Chau-Dang.png",
+  "Monica Moya": "assets/cards/Monica-Moya.png",
+  "Luis Garcia": "assets/cards/Luis-Garcia.png",
+  "Kristen Smith": "assets/cards/Kristen-Smith.png",
+  "Reyna Suarez": "assets/cards/Reyna-Suarez.png",
+  "Joshua Patterson": "assets/cards/Joshua-Patterson.png",
+  "Naomie Droll": "assets/cards/Naomie-Droll.png",
+  "Equitable Foundation": "assets/cards/Equitable-Foundation.png",
+  "APIA Scholars": "assets/cards/APIA-Scholars.png",
+  "Black Pepper Studios": "assets/cards/Black-Pepper-Studios.png",
+  "Autentica Consulting": "assets/cards/Autentica-Consulting.png",
+  "Mocel Mezcal Artesanal": "assets/cards/Mocel-Mezcal-Artesanal.png",
+  "Emerald City Flowers": "assets/cards/Emerald-City-Flowers.png",
+  "Junbi Seattle": "assets/cards/Junbi-Seattle.png",
+  "The Dap Project": "assets/cards/The-Dap-Project.png",
+  "Rendon Entrepreneurial Center": "assets/cards/Rendon-Entrepreneurial-Center.png",
+  "Anchovies & Salt": "assets/cards/Anchovies-Salt.png",
+  "Paani": "assets/cards/Paani.png",
+  "Capitol Nations Law & Policy PLLC": "assets/cards/Capitol-Nations-Law-Policy-PLLC.png",
+  "Strong Enough Girls Empowerment Initiative": "assets/cards/Strong-Enough-Girls-Empowerment-Initiative.png",
+  "Rescuing Leftover Cuisine": "assets/cards/Rescuing-Leftover-Cuisine.png",
+  "Jim Larimore": "assets/cards/Jim-Larimore.png",
+  "Allyson L. Watson, Ph.D.": "assets/cards/Allyson-L-Watson-PhD.png",
+  "Corey A. Hardiman": "assets/cards/Corey-A-Hardiman.png",
+  "Chandra Gill, Ph.D.": "assets/cards/Chandra-Gill-PhD.png",
+  "DuMarkus Davis": "assets/cards/DuMarkus-Davis.png",
+  "Amber Gunner, Ed.D.": "assets/cards/Amber-Gunner-EdD.png",
+  "Brandon Johnson": "assets/cards/Brandon-Johnson.png",
+  "Arami Walker": "assets/cards/Arami-Walker.png",
+  "Athena Lao": "assets/cards/Athena-Lao.png",
+  "Kayode O. Aje": "assets/cards/Kayode-O-Aje.png",
+  "Alex Rodriguez": "assets/cards/Alex-Rodriguez.png",
+  "Catalina Salinas": "assets/cards/Catalina-Salinas.png",
+  "Lima Hossain": "assets/cards/Lima-Hossain.png",
+  "Shanava Saintolien, MBA": "assets/cards/Shanava-Saintolien-MBA.png",
+  "Felicia L. Harris, PhD": "assets/cards/Felicia-L-Harris-PhD.png",
+  "Tanisha Manning, J.D.": "assets/cards/Tanisha-Manning-JD.png",
+  "Emilia Savage, DrPH": "assets/cards/Emilia-Savage-DrPH.png",
+  "Ibraheem Alinur": "assets/cards/Ibraheem-Alinur.png",
+  "Shai Basys": "assets/cards/Shai-Basys.png",
+  "Brittany L. Hogan": "assets/cards/Brittany-L-Hogan.png",
+  "Quan Neloms": "assets/cards/Quan-Neloms.png",
+  "KrisTiana Dove": "assets/cards/KrisTiana-Dove.png",
+  "James Lovell": "assets/cards/James-Lovell.png",
+  "Krista Schnell": "assets/cards/Krista-Schnell.png",
+  "Karen Isabel Perez, PhD": "assets/cards/Karen-Isabel-Perez-PhD.png",
+  "Kyla Samuels-Stewart": "assets/cards/Kyla-Samuels-Stewart.png",
+  "Nathaniel Ramos Jr., PhD": "assets/cards/Nathaniel-Ramos-Jr-PhD.png",
+  "Aubrey Skeeter": "assets/cards/Aubrey-Skeeter.png",
+  "Rod Bravo": "assets/cards/Rod-Bravo.png",
+  "Tilifayea L. Griffin, MAT": "assets/cards/Tilifayea-L-Griffin-MAT.png",
+  "Jalisa Evans": "assets/cards/Jalisa-Evans.png",
+  "Lillian C. Martz, Ph.D.": "assets/cards/Lillian-C-Martz-PhD.png",
+  "Ana Quiñones": "assets/cards/Ana-Quiñones.png",
+  "Jessica C. Guthrie, M.Ed": "assets/cards/Jessica-C-Guthrie-MEd.png",
+  "Cinthia Manuel": "assets/cards/Cinthia-Manuel.png",
+  "Robert Lee": "assets/cards/Robert-Lee.png",
+  "Larry A. Griffith": "assets/cards/Larry-A-Griffith.png",
+  "Timothy D. Wells, MBA, MCC": "assets/cards/Timothy-D-Wells-MBA-MCC.png",
+  "Joshua Dieujuste": "assets/cards/Joshua-Dieujuste.png",
+  "Jonathan Jewell-Chatten": "assets/cards/Jonathan-Jewell-Chatten.png",
+  "Sofia Andrade": "assets/cards/Sofia-Andrade.png",
+  "Sherella Cupid": "assets/cards/Sherella-Cupid.png",
+  "Opokua Oduro": "assets/cards/Opokua-Oduro.png",
+  "Victoria Perez": "assets/cards/Victoria-Perez.png",
+};
+
+// Full list pulled from the spreadsheet (all 76 people/orgs). Most don't have
+// their individual card rendered yet — those open a placeholder in the modal.
+const PEOPLE = [
+  {name:"Whitney Blanco", cat:"TIME", sub:"Human Capital — Service"},
+  {name:"Feyone La", cat:"TIME", sub:"Human Capital — Service"},
+  {name:"Augustina Mensa-Kwao", cat:"TIME", sub:"Human Capital — Service"},
+  {name:"Roslyn Joinvil", cat:"TIME", sub:"Human Capital — Service"},
+  {name:"Oghene Oyiborhoro", cat:"TIME", sub:"Human Capital — Service"},
+  {name:"Alexis Phillips", cat:"TIME", sub:"Human Capital — Service"},
+  {name:"Ethan Skinner", cat:"TIME", sub:"Human Capital — Service"},
+  {name:"Elisa Solis", cat:"TIME", sub:"Human Capital — Service"},
+  {name:"Nnenna Ibeanusi", cat:"TIME", sub:"Human Capital — Service"},
+  {name:"Adan Garcia-Mechinas", cat:"TIME", sub:"Human Capital — Service"},
+  {name:"Joshua Sanchez", cat:"TIME", sub:"Human Capital — Planning Committee"},
+  {name:"Onyinye Edeh", cat:"TIME", sub:"Human Capital — Planning Committee"},
+  {name:"Zephanii Smith", cat:"TIME", sub:"Social Capital — Relationship Building"},
+  {name:"Loreal Latimer", cat:"TIME", sub:"Human Capital — Early Planning Support"},
+  {name:"Judith Rendon", cat:"TALENT", sub:"Reputational Capital — Voice & Advocacy"},
+  {name:"Noah Morton", cat:"TIME", sub:"Human Capital — Service"},
+  {name:"Stephanie Gargiulo", cat:"TIME", sub:"Human Capital — Service"},
+  {name:"Chau Dang", cat:"TALENT", sub:"Institutional Capital — Governance & Vision"},
+  {name:"Monica Moya", cat:"TALENT", sub:"Institutional Capital — Governance & Stewardship"},
+  {name:"Luis Garcia", cat:"TIME", sub:"Social Capital — Relationship Building"},
+  {name:"Kristen Smith", cat:"TIME", sub:"Social Capital — Community Building"},
+  {name:"Reyna Suarez", cat:"TALENT", sub:"Institutional Capital — Governance & Stewardship"},
+  {name:"Joshua Patterson", cat:"TALENT", sub:"Reputational Capital — Voice & Advocacy"},
+  {name:"Naomie Droll", cat:"TALENT", sub:"Institutional Capital — Leadership & Execution"},
+  {name:"Equitable Foundation", cat:"TREASURE", sub:"Financial Capital — Lead Sponsorship"},
+  {name:"APIA Scholars", cat:"TREASURE", sub:"Financial Capital — Sponsorship"},
+  {name:"Black Pepper Studios", cat:"TREASURE", sub:"Financial Capital — Sponsorship"},
+  {name:"Autentica Consulting", cat:"TREASURE", sub:"Financial Capital — Sponsorship"},
+  {name:"Mocel Mezcal Artesanal", cat:"TREASURE", sub:"Financial Capital — Sponsorship"},
+  {name:"Emerald City Flowers", cat:"TREASURE", sub:"Financial Capital — Sponsorship"},
+  {name:"Junbi Seattle", cat:"TREASURE", sub:"Financial Capital — Sponsorship"},
+  {name:"The Dap Project", cat:"TREASURE", sub:"Financial Capital — Sponsorship"},
+  {name:"Rendon Entrepreneurial Center", cat:"TREASURE", sub:"Financial Capital — Sponsorship"},
+  {name:"Anchovies & Salt", cat:"TREASURE", sub:"Financial Capital — Sponsorship"},
+  {name:"Paani", cat:"TREASURE", sub:"Financial Capital — Sponsorship"},
+  {name:"Capitol Nations Law & Policy PLLC", cat:"TREASURE", sub:"Financial Capital — Sponsorship"},
+  {name:"Strong Enough Girls Empowerment Initiative", cat:"TREASURE", sub:"Financial Capital — Sponsorship"},
+  {name:"Rescuing Leftover Cuisine", cat:"TREASURE", sub:"Financial Capital — Sponsorship"},
+  {name:"Jim Larimore", cat:"TALENT", sub:"Reputational Capital — Voice & Perspective"},
+  {name:"Allyson L. Watson, Ph.D.", cat:"TALENT", sub:"Human Capital — Facilitation"},
+  {name:"Corey A. Hardiman", cat:"TALENT", sub:"Reputational Capital — Voice & Perspective"},
+  {name:"Chandra Gill, Ph.D.", cat:"TALENT", sub:"Human Capital — Subject-Matter Expertise"},
+  {name:"DuMarkus Davis", cat:"TALENT", sub:"Reputational Capital — Voice & Inspiration"},
+  {name:"Amber Gunner, Ed.D.", cat:"TALENT", sub:"Reputational Capital — Voice & Storytelling"},
+  {name:"Brandon Johnson", cat:"TALENT", sub:"Human Capital — Design Expertise"},
+  {name:"Arami Walker", cat:"TALENT", sub:"Reputational Capital — Creative Voice"},
+  {name:"Athena Lao", cat:"TALENT", sub:"Human Capital — Storytelling Expertise"},
+  {name:"Kayode O. Aje", cat:"TALENT", sub:"Career Capital — Financial Capability"},
+  {name:"Alex Rodriguez", cat:"TALENT", sub:"Career Capital — Career Access"},
+  {name:"Catalina Salinas", cat:"TALENT", sub:"Human Capital — Public Health Expertise"},
+  {name:"Lima Hossain", cat:"TALENT", sub:"Human Capital — Policy Expertise"},
+  {name:"Shanava Saintolien, MBA", cat:"TALENT", sub:"Human Capital — Research Expertise"},
+  {name:"Felicia L. Harris, PhD", cat:"TALENT", sub:"Human Capital — Communications Expertise"},
+  {name:"Tanisha Manning, J.D.", cat:"TALENT", sub:"Human Capital — Academic Leadership"},
+  {name:"Emilia Savage, DrPH", cat:"TALENT", sub:"Human Capital — Public Health Expertise"},
+  {name:"Ibraheem Alinur", cat:"TALENT", sub:"Career Capital — Industry Insight"},
+  {name:"Shai Basys", cat:"TALENT", sub:"Career Capital — Entrepreneurial Skills"},
+  {name:"Brittany L. Hogan", cat:"TALENT", sub:"Reputational Capital — Voice & Advocacy"},
+  {name:"Quan Neloms", cat:"TALENT", sub:"Reputational Capital — Story & Visibility"},
+  {name:"KrisTiana Dove", cat:"TALENT", sub:"Reputational Capital — Changemaker Story"},
+  {name:"James Lovell", cat:"TALENT", sub:"Human Capital — Fundraising Expertise"},
+  {name:"Krista Schnell", cat:"TALENT", sub:"Institutional Capital — Program Leadership"},
+  {name:"Karen Isabel Perez, PhD", cat:"TALENT", sub:"Reputational Capital — Changemaker Story"},
+  {name:"Kyla Samuels-Stewart", cat:"TALENT", sub:"Reputational Capital — Changemaker Story"},
+  {name:"Nathaniel Ramos Jr., PhD", cat:"TALENT", sub:"Reputational Capital — Changemaker Story"},
+  {name:"Aubrey Skeeter", cat:"TALENT", sub:"Reputational Capital — Changemaker Story"},
+  {name:"Rod Bravo", cat:"TALENT", sub:"Reputational Capital — Changemaker Story"},
+  {name:"Tilifayea L. Griffin, MAT", cat:"TALENT", sub:"Human Capital — Organizing Skills"},
+  {name:"Jalisa Evans", cat:"TALENT", sub:"Institutional Capital — Movement Building"},
+  {name:"Lillian C. Martz, Ph.D.", cat:"TALENT", sub:"Human Capital — Well-Being Expertise"},
+  {name:"Ana Quiñones", cat:"TALENT", sub:"Human Capital — Clinical Expertise"},
+  {name:"Jessica C. Guthrie, M.Ed", cat:"TALENT", sub:"Reputational Capital — Voice & Advocacy"},
+  {name:"Cinthia Manuel", cat:"TALENT", sub:"Human Capital — Facilitation & Reflection"},
+  {name:"Robert Lee", cat:"TALENT", sub:"Human Capital — Scaling Expertise"},
+  {name:"Larry A. Griffith", cat:"TALENT", sub:"Institutional Capital — Legacy Leadership"},
+  {name:"Timothy D. Wells, MBA, MCC", cat:"TALENT", sub:"Career Capital — Coaching"},
+  {name:"Joshua Dieujuste", cat:"TALENT", sub:"Human Capital — Photography"},
+  {name:"Jonathan Jewell-Chatten", cat:"TALENT", sub:"Human Capital — Videography"},
+  {name:"Sofia Andrade", cat:"TIME", sub:"Human Capital — Planning Committee"},
+  {name:"Sherella Cupid", cat:"TIME", sub:"Human Capital — Planning Committee"},
+  {name:"Opokua Oduro", cat:"TREASURE", sub:"Financial Capital — Foundation Partnership"},
+  {name:"Victoria Perez", cat:"TIME", sub:"Human Capital — Early Support"},
+];
+
+const grid = document.getElementById("grid");
+const overlay = document.getElementById("modalOverlay");
+const modalBox = document.getElementById("modalBox");
+const searchInput = document.getElementById("searchInput");
+
+const TEXTURE_PHOTOS = [
+  `${SCRATCH}/grid-photos/grid-000.jpg`,
+  `${SCRATCH}/grid-photos/grid-001.jpg`,
+  `${SCRATCH}/grid-photos/grid-002.jpg`,
+  `${SCRATCH}/grid-photos/grid-003.jpg`,
+  `${SCRATCH}/grid-photos/grid-004.jpg`,
+  `${SCRATCH}/grid-photos/grid-005.jpg`,
+  `${SCRATCH}/grid-photos/grid-006.jpg`,
+  `${SCRATCH}/grid-photos/grid-007.jpg`,
+  `${SCRATCH}/grid-photos/grid-008.jpg`,
+  `${SCRATCH}/grid-photos/grid-009.jpg`,
+  `${SCRATCH}/grid-photos/grid-010.jpg`,
+  `${SCRATCH}/grid-photos/grid-011.jpg`,
+  `${SCRATCH}/grid-photos/grid-012.jpg`,
+  `${SCRATCH}/grid-photos/grid-013.jpg`,
+  `${SCRATCH}/grid-photos/grid-014.jpg`,
+  `${SCRATCH}/grid-photos/grid-015.jpg`,
+  `${SCRATCH}/grid-photos/grid-016.jpg`,
+  `${SCRATCH}/grid-photos/grid-017.jpg`,
+  `${SCRATCH}/grid-photos/grid-018.jpg`,
+  `${SCRATCH}/grid-photos/grid-019.jpg`,
+  `${SCRATCH}/grid-photos/grid-020.jpg`,
+  `${SCRATCH}/grid-photos/grid-021.jpg`,
+  `${SCRATCH}/grid-photos/grid-022.jpg`,
+  `${SCRATCH}/grid-photos/grid-023.jpg`,
+  `${SCRATCH}/grid-photos/grid-024.jpg`,
+  `${SCRATCH}/grid-photos/grid-025.jpg`,
+  `${SCRATCH}/grid-photos/grid-026.jpg`,
+  `${SCRATCH}/grid-photos/grid-027.jpg`,
+  `${SCRATCH}/grid-photos/grid-028.jpg`,
+  `${SCRATCH}/grid-photos/grid-029.jpg`,
+  `${SCRATCH}/grid-photos/grid-030.jpg`,
+  `${SCRATCH}/grid-photos/grid-031.jpg`,
+  `${SCRATCH}/grid-photos/grid-032.jpg`,
+  `${SCRATCH}/grid-photos/grid-033.jpg`,
+  `${SCRATCH}/grid-photos/grid-034.jpg`,
+  `${SCRATCH}/grid-photos/grid-035.jpg`,
+  `${SCRATCH}/grid-photos/grid-036.jpg`,
+  `${SCRATCH}/grid-photos/grid-037.jpg`,
+  `${SCRATCH}/grid-photos/grid-038.jpg`,
+  `${SCRATCH}/grid-photos/grid-039.jpg`,
+  `${SCRATCH}/grid-photos/grid-040.jpg`,
+  `${SCRATCH}/grid-photos/grid-041.jpg`,
+  `${SCRATCH}/grid-photos/grid-042.jpg`,
+  `${SCRATCH}/grid-photos/grid-043.jpg`,
+  `${SCRATCH}/grid-photos/grid-044.jpg`,
+  `${SCRATCH}/grid-photos/grid-045.jpg`,
+  `${SCRATCH}/grid-photos/grid-046.jpg`,
+  `${SCRATCH}/grid-photos/grid-047.jpg`,
+  `${SCRATCH}/grid-photos/grid-048.jpg`,
+  `${SCRATCH}/grid-photos/grid-049.jpg`,
+  `${SCRATCH}/grid-photos/grid-050.jpg`,
+  `${SCRATCH}/grid-photos/grid-051.jpg`,
+  `${SCRATCH}/grid-photos/grid-052.jpg`,
+  `${SCRATCH}/grid-photos/grid-053.jpg`,
+  `${SCRATCH}/grid-photos/grid-054.jpg`,
+  `${SCRATCH}/grid-photos/grid-055.jpg`,
+  `${SCRATCH}/grid-photos/grid-056.jpg`,
+  `${SCRATCH}/grid-photos/grid-057.jpg`,
+  `${SCRATCH}/grid-photos/grid-058.jpg`,
+  `${SCRATCH}/grid-photos/grid-059.jpg`,
+  `${SCRATCH}/grid-photos/grid-060.jpg`,
+  `${SCRATCH}/grid-photos/grid-061.jpg`,
+  `${SCRATCH}/grid-photos/grid-062.jpg`,
+  `${SCRATCH}/grid-photos/grid-063.jpg`,
+  `${SCRATCH}/grid-photos/grid-064.jpg`,
+  `${SCRATCH}/grid-photos/grid-065.jpg`,
+  `${SCRATCH}/grid-photos/grid-066.jpg`,
+  `${SCRATCH}/grid-photos/grid-067.jpg`,
+  `${SCRATCH}/grid-photos/grid-068.jpg`,
+  `${SCRATCH}/grid-photos/grid-069.jpg`,
+  `${SCRATCH}/grid-photos/grid-070.jpg`,
+  `${SCRATCH}/grid-photos/grid-071.jpg`,
+  `${SCRATCH}/grid-photos/grid-072.jpg`,
+  `${SCRATCH}/grid-photos/grid-073.jpg`,
+  `${SCRATCH}/grid-photos/grid-074.jpg`,
+  `${SCRATCH}/grid-photos/grid-075.jpg`,
+  `${SCRATCH}/grid-photos/grid-076.jpg`,
+  `${SCRATCH}/grid-photos/grid-077.jpg`,
+  `${SCRATCH}/grid-photos/grid-078.jpg`,
+  `${SCRATCH}/grid-photos/grid-079.jpg`,
+  `${SCRATCH}/grid-photos/grid-080.jpg`,
+  `${SCRATCH}/grid-photos/grid-081.jpg`,
+  `${SCRATCH}/grid-photos/grid-082.jpg`,
+  `${SCRATCH}/grid-photos/grid-083.jpg`,
+];
+
+// shuffle once per page load so the whole pool gets a chance to appear,
+// not just the first N in file order
+function shuffle(arr){
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+const SHUFFLED_PHOTOS = shuffle(TEXTURE_PHOTOS);
+
+function renderGrid(filter, query){
+  grid.innerHTML = "";
+  const q = (query || "").trim().toLowerCase();
+  const filtered = PEOPLE.filter(p => {
+    const matchesFilter = filter === "ALL" || p.cat === filter;
+    const matchesQuery = !q || p.name.toLowerCase().includes(q) || p.sub.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q);
+    return matchesFilter && matchesQuery;
+  });
+
+  let photoI = 0;
+
+  filtered.forEach((p, i) => {
+    const el = document.createElement("div");
+    el.className = "tile tile-person";
+    el.innerHTML = `
+      <img class="tile-icon" src="${ICONS[p.cat]}" alt="">
+      <p class="tile-name">${p.name}</p>
+      <div class="tile-badge">${p.cat}</div>
+      <p class="tile-line">${p.sub}</p>
+      ${REAL_CARDS[p.name] ? "" : '<div class="placeholder-tag">Card not yet generated</div>'}
+    `;
+    el.addEventListener("click", () => openModal(p));
+    grid.appendChild(el);
+
+    // strict checkerboard: a photo tile after every single person tile
+    const photo = SHUFFLED_PHOTOS[photoI % SHUFFLED_PHOTOS.length];
+    photoI++;
+    const texture = document.createElement("div");
+    texture.className = "tile tile-photo";
+    texture.style.backgroundImage = `url('${photo}')`;
+    grid.appendChild(texture);
+  });
+}
+
+function openModal(p){
+  if (REAL_CARDS[p.name]) {
+    modalBox.innerHTML = `<button class="modal-close" onclick="closeModal()">&times;</button><img src="${REAL_CARDS[p.name]}">`;
+  } else {
+    modalBox.innerHTML = `
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <div class="modal-placeholder">
+        <div class="badge">${p.cat}</div>
+        <h3>Thank You, ${p.name}</h3>
+        <p>${p.sub}</p>
+        <div class="note">FULL CARD NOT YET GENERATED — this is a placeholder. Once we run the full batch, every tile opens its real "Thank You" card.</div>
+      </div>`;
+  }
+  overlay.classList.add("open");
+}
+function closeModal(){ overlay.classList.remove("open"); }
+overlay.addEventListener("click", e => { if (e.target === overlay) closeModal(); });
+
+let activeFilter = "ALL";
+document.querySelectorAll(".filter-chip").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-chip").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    activeFilter = btn.dataset.filter;
+    renderGrid(activeFilter, searchInput.value);
+  });
+});
+searchInput.addEventListener("input", () => renderGrid(activeFilter, searchInput.value));
+
+renderGrid("ALL", "");
+</script>
+
+</body>
+</html>
