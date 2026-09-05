@@ -102,9 +102,13 @@
   }
   @media (max-width:600px){
     .grid{
-      grid-template-columns:repeat(3,1fr);grid-auto-rows:130px;padding:0 16px 60px 16px;gap:8px;
+      grid-template-columns:repeat(3,1fr);grid-auto-rows:150px;padding:0 16px 60px 16px;gap:8px;
     }
-    .tile{padding:12px;}
+    .tile{padding:10px;}
+    .tile.tile-person img.tile-icon{height:20px;margin-bottom:5px;}
+    .tile .tile-name{font-size:12px;line-height:1.2;margin-bottom:2px;}
+    .tile .tile-badge{font-size:8px;margin-bottom:2px;}
+    .tile .tile-line{display:none;}
 
     html,body{overflow-x:hidden;max-width:100%;}
     .nav{flex-direction:column;align-items:flex-start;gap:12px;padding:18px 20px;}
